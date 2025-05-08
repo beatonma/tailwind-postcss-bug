@@ -50,11 +50,25 @@
   .expected {
     @apply -bg-color;
   }
+
+  .before-and-after {
+    @apply relative py-8;
+
+    /* Same broken behaviour as .together above */
+    &::before,
+    &::after {
+      @apply content-[''] h-1 absolute left-0 w-full -bg-color;
+    }
+  }
 }
 
 @layer base {
   body {
     @apply bg-black text-white p-4;
+  }
+
+  section {
+    @apply space-y-8;
   }
 
   p {
