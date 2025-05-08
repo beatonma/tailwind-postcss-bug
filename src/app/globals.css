@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@utility -bg-color {
+  background-color: color-mix(in srgb, var(--hover, var(--fg)) 50%, var(--bg));
+}
+
+@utility -before {
+  @apply relative;
+  &::before {
+    @apply absolute inset-0 -z-1 content-[''];
+  }
+}
+
+@layer components {
+  .separate,
+  .together {
+    @apply -before;
+  }
+
+  .separate {
+    /*
+      Pseudo class selectors defined in separate rules
+
+      This works fine, background color resolves as expected to:
+        color-mix(in srgb,var(--hover,var(--fg))50%,var(--bg))
+     */
+    &:focus-visible::before {
+      @apply -bg-color;
+    }
+    &:hover::before {
+      @apply -bg-color;
+    }
+  }
+
+  .together {
+    /*
+      Pseudo class selectors defined in same rule
+
+      The background color resolves unexpectedly to:
+        var(--hover,var(--fg))
+
+      i.e. The `color-mix` function disappears, replaced by its first argument.
+     */
+    &:focus-visible::before,
+    &:hover::before {
+      @apply -bg-color;
+    }
+  }
+
+  .expected {
+    @apply -bg-color;
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-black text-white p-4;
+  }
+
+  p {
+    @apply mb-2;
+  }
+
+  code {
+    @apply font-mono text-amber-300;
+  }
+}
+
+@property --hover {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: none;
+}
+
+@property --fg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: none;
+}
+
+@property --bg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: none;
+}
