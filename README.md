@@ -1,3 +1,8 @@
+> [!NOTE]  
+> edit: I believe this issue actually originates in Lightning CSS (https://github.com/parcel-bundler/lightningcss/issues/975) and the Tailwind side of things is okay.
+
+---
+
 Since `@tailwindcss/postcss@4.1.2` (most likely commit [`60b0da9`](https://github.com/tailwindlabs/tailwindcss/commit/60b0da90cee9e71a2d3117053cc4cc2d6e9196fe)), the CSS function `color-mix` resolves unexpectedly when:
 
 - multiple pseudo-element selectors are defined in a single rule: `&::before, &::after {}`, or
